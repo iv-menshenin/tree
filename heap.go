@@ -1,7 +1,7 @@
 package tree
 
 type (
-	Tree[T Ordered] struct {
+	Heap[T Ordered] struct {
 		heap []T
 	}
 	Ordinary interface {
@@ -12,15 +12,15 @@ type (
 	}
 )
 
-func New[T Ordered](init []T) *Tree[T] {
-	var tree = Tree[T]{heap: init}
+func NewHeap[T Ordered](init []T) *Heap[T] {
+	var tree = Heap[T]{heap: init}
 	if tree.Len() > 0 {
 		tree.makeBalance()
 	}
 	return &tree
 }
 
-func (t *Tree[T]) makeBalance() {
+func (t *Heap[T]) makeBalance() {
 	var n = 0
 	for idxOfRightChild(n) < t.Len() {
 		n = idxOfRightChild(n)
@@ -30,11 +30,11 @@ func (t *Tree[T]) makeBalance() {
 	}
 }
 
-func (t *Tree[T]) Len() int {
+func (t *Heap[T]) Len() int {
 	return len(t.heap)
 }
 
-func (t *Tree[T]) Put(nodes ...T) {
+func (t *Heap[T]) Put(nodes ...T) {
 	for _, node := range nodes {
 		heapLen := t.Len()
 		t.heap = append(t.heap, node)
@@ -42,7 +42,7 @@ func (t *Tree[T]) Put(nodes ...T) {
 	}
 }
 
-func (t *Tree[T]) PopMax() (val T, ok bool) {
+func (t *Heap[T]) PopMax() (val T, ok bool) {
 	heapLen := t.Len()
 	if heapLen == 0 {
 		return
@@ -55,7 +55,7 @@ func (t *Tree[T]) PopMax() (val T, ok bool) {
 	return val, true
 }
 
-func (t *Tree[T]) bUp(currentIdx int) {
+func (t *Heap[T]) bUp(currentIdx int) {
 	for currentIdx > 0 {
 		parentIdx := idxOfParent(currentIdx)
 		if t.heap[parentIdx] < t.heap[currentIdx] {
@@ -67,7 +67,7 @@ func (t *Tree[T]) bUp(currentIdx int) {
 	}
 }
 
-func (t *Tree[T]) bDown(currentIdx int) {
+func (t *Heap[T]) bDown(currentIdx int) {
 	for heapLen := t.Len(); currentIdx < heapLen; {
 		var (
 			leftChildIdx              = idxOfLeftChild(currentIdx)
@@ -94,7 +94,7 @@ func (t *Tree[T]) bDown(currentIdx int) {
 	}
 }
 
-func (t *Tree[T]) swap(a, b int) {
+func (t *Heap[T]) swap(a, b int) {
 	t.heap[a], t.heap[b] = t.heap[b], t.heap[a]
 }
 

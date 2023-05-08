@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func TestNew(t *testing.T) {
-	tree := New([]int{})
+func Test_NewHeap(t *testing.T) {
+	tree := NewHeap([]int{})
 	tree.Put(42, 13, 54, 2, 1, 67, 43, 23)
 	if err := checkBalance(tree); err != nil {
 		t.Error(err)
@@ -43,8 +43,8 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func TestExistingHeap(t *testing.T) {
-	tree := New([]int{42, 13, 54, 2, 1, 67, 43, 23})
+func Test_ExistingHeap(t *testing.T) {
+	tree := NewHeap([]int{42, 13, 54, 2, 1, 67, 43, 23})
 	if err := checkBalance(tree); err != nil {
 		t.Error(err)
 	}
@@ -80,7 +80,7 @@ func TestExistingHeap(t *testing.T) {
 	}
 }
 
-func checkBalance(tree *Tree[int]) error {
+func checkBalance(tree *Heap[int]) error {
 	for i, x := range tree.heap {
 		if l := idxOfLeftChild(i); l < len(tree.heap) {
 			if tree.heap[l] > x {
